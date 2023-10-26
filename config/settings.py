@@ -118,19 +118,20 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
+    ],
+    "PAGE_SIZE": 10,
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 
 JWT_AUTH = {
     "JWT_SECRET_KEY": SECRET_KEY,  # FIXME: JWT_SECRET_KEY
     "JWT_ALGORITHM": "HS256",
-    "JWT_ALLOW_REFRESH": False,
     "JWT_EXPIRATION_DELTA": timedelta(days=7),
     "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=28),
 }
