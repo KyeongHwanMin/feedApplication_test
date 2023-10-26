@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from post.models import Post
-from post.serializers import PostSerializer
+from post.serializers import PostWriteSerializer, PostListSerializer
 
 
 class MyPageNumberPagination(PageNumberPagination):
@@ -30,14 +30,15 @@ class PostListAPIView(APIView):
         paginated_qs = paginator.paginate_queryset(qs, request)
 
         if paginated_qs is not None:
-            serializer = PostSerializer(paginated_qs, many=True)
+            serializer = PostListSerializer(paginated_qs, many=True)
             return paginator.get_paginated_response(serializer.data)
-        serializer = PostSerializer(qs, many=True)
+        serializer = PostListSerializer(qs, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = PostSerializer(data=request.data)
+        serializer = PostWriteSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
+
         return Response(serializer.errors, status=400)
